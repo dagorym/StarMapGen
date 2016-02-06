@@ -429,12 +429,31 @@ def createMap(params,defDict,symbolList,connectionList):
 	# close off file
 	f.write("</svg>")
 	f.close()
-	pass
+	
+
+def writeSystemData(params,sList,connectionList):
+	f = open(params['datafile'],'w')
+	for system in sList:
+		f.write('Name:\n')
+		f.write("Coordinates: (%d,%d,%d)\n" % (system.x,system.y,system.z))
+		f.write("Number of Stars: %d\n" % system.nStars)
+		f.write("Spectral Types: ")
+		count = 0
+		for star in system.stars:
+			f.write(star)
+			count = count + 1
+			if (count != system.nStars):
+				f.write(", ")
+			else:
+				f.write("\n\n")
+	
+	f.close()
 
 if __name__ == '__main__':
 #	seed(3)  # this gives two star systems on the same (x,y) with p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12}
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
-	p = {'maxX':44,'maxY':24,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
+	p = {'maxX':44,'maxY':24,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
+		,'datafile':"sampleSystemData.txt"}
 	# parse command-line options for size of map, 2D or 3D, grid type, distance threshold and whatever else I think to add
 
 	# generate list of star system data
@@ -454,4 +473,5 @@ if __name__ == '__main__':
 	# draw map
 	createMap(p,defDict,symbolList,connectionList)
 	
-	
+	#write out the star system data
+	writeSystemData(p,starList,connectionList)
