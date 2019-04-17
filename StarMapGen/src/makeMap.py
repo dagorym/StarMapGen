@@ -38,7 +38,7 @@ def createDef(spType,starData,dDict):
 	gList = [g1,g2,g3]	
 	
 	if g1 not in dDict:
-		print ("Adding " + g1 + " definition")
+#		print ("Adding " + g1 + " definition")
 		r1 = 100 * starData[0]
 		s1 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g1,r1)
 		s1 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][0])
@@ -47,7 +47,7 @@ def createDef(spType,starData,dDict):
 		dDict[g1]=s1
 
 	if g2 not in dDict: 
-		print ("Adding " + g2 + " definition")
+#		print ("Adding " + g2 + " definition")
 		r2 = 56.25 * starData[0]
 		s2 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g2,r2)
 		s2 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][1])
@@ -57,7 +57,7 @@ def createDef(spType,starData,dDict):
 		dDict[g2]=s2
 
 	if g3 not in dDict:
-		print ("Adding " + g3 + " definition")
+#		print ("Adding " + g3 + " definition")
 		r3 = 50 * starData[0]
 		s3 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g3,r3)
 		s3 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][2])
@@ -453,6 +453,7 @@ if __name__ == '__main__':
 #	seed(3)  # this gives two star systems on the same (x,y) with p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12}
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
 	p = {'maxX':44,'maxY':24,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
+#	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
 		,'datafile':"sampleSystemData.txt"}
 	# parse command-line options for size of map, 2D or 3D, grid type, distance threshold and whatever else I think to add
 
