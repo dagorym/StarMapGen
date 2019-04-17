@@ -37,8 +37,8 @@ def createDef(spType,starData,dDict):
 
 	gList = [g1,g2,g3]	
 	
-	if True != dDict.has_key(g1): 
-#		print "Adding " + g1 + " definition"
+	if g1 not in dDict:
+		print ("Adding " + g1 + " definition")
 		r1 = 100 * starData[0]
 		s1 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g1,r1)
 		s1 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][0])
@@ -46,8 +46,8 @@ def createDef(spType,starData,dDict):
 		s1 += '  </radialGradient>\n'
 		dDict[g1]=s1
 
-	if True != dDict.has_key(g2): 
-#		print "Adding " + g2 + " definition"
+	if g2 not in dDict: 
+		print ("Adding " + g2 + " definition")
 		r2 = 56.25 * starData[0]
 		s2 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g2,r2)
 		s2 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][1])
@@ -56,8 +56,8 @@ def createDef(spType,starData,dDict):
 		s2 += '  </radialGradient>\n'
 		dDict[g2]=s2
 
-	if True != dDict.has_key(g3):
-#		print "Adding " + g3 + " definition"
+	if g3 not in dDict:
+		print ("Adding " + g3 + " definition")
 		r3 = 50 * starData[0]
 		s3 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g3,r3)
 		s3 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][2])
@@ -178,7 +178,7 @@ def findOverlaps(sList):
 		n = mList.count(x);
 		if (n>1 and not x in mulList):
 			mulList.append(x)
-			print "there are", n,"systems at",x
+			print ("there are", n,"systems at",x)
 	return mulList
 
 def getTweakOffset(sList):
@@ -284,25 +284,25 @@ def getStarOffsetList(n):
 	if (3 == n):
 		return [(-36,-36),(36,-20),(-12,36)]
 	if (4 == n):
-		print "4 stars"
+		print ("4 stars")
 		return [(-36,-36),(36,-36),(-36,36),(36,36)]
 	if (5 == n):
-		print "5 stars"
+		print ("5 stars")
 		return [(-44,-20),(0,-48),(44,-20),(28,32),(-28,32)]
 	if (6 == n):
-		print "6 stars"
+		print ("6 stars")
 		return [(-28,-48),(28,-48),(56,0),(28,48),(-28,48),(-56,0)]
 	if (7 == n):
-		print "7 stars"
+		print ("7 stars")
 		return [(-28,-48),(28,-48),(56,0),(28,48),(-28,48),(-56,0),(0,0)]
 	if (8 == n):
-		print "8 stars"
+		print ("8 stars")
 		return [(-42,-42),(0,-60),(42,-42),(60,0),(42,42),(0,60),(-42,42),(-60,0)]
 	if (9 == n):
-		print "9 stars"
+		print ("9 stars")
 		return [(-42,-42),(0,-60),(42,-42),(60,0),(42,42),(0,60),(-42,42),(-60,0),(0,0)]
 	if (10 == n):
-		print "10 stars"
+		print ("10 stars")
 		return [(-42,-42),(0,-60),(42,-42),(60,0),(42,42),(0,60),(-42,42),(-60,0),(20,-20),(-20,20)]
 	else:
 		return [(0,0) * n]
@@ -376,11 +376,11 @@ def drawConnections(f,cList):
 			if (slope < 0):
 				xscale = -xscale
 #				yscale = -yscale
-#			if (slope <= 0): print "I: sl = %f an = %f xs = %f ys= %f d = %f x1=%f y1=%f x2=%f y2=%f" % (slope,angle,xscale,yscale,c[2],(x1/150),(y1/150),(x2/150),(y2/150))
+#			if (slope <= 0): print ("I: sl = %f an = %f xs = %f ys= %f d = %f x1=%f y1=%f x2=%f y2=%f" % (slope,angle,xscale,yscale,c[2],(x1/150),(y1/150),(x2/150),(y2/150)))
 		else:
 			xscale = -0.2
 			yscale = 0
-#			if (slope <= 0): print "I2: sl = %f an = %f xs = %f ys= %f d = %f x1=%f y1=%f x2=%f y2=%f" % (slope,angle,xscale,yscale,c[2],(c[0][0]/150),(c[0][1]/150),(c[1][0]/150),(c[1][1]/150))
+#			if (slope <= 0): print ("I2: sl = %f an = %f xs = %f ys= %f d = %f x1=%f y1=%f x2=%f y2=%f" % (slope,angle,xscale,yscale,c[2],(c[0][0]/150),(c[0][1]/150),(c[1][0]/150),(c[1][1]/150)))
 		if (0 == slope):
 			yscale /= 2
 		else:
@@ -393,7 +393,7 @@ def drawConnections(f,cList):
 		data += "%d</text></g>" % c[2]
 #		if (fabs(angle) < 20 and fabs(angle) >=10): 
 		f.write(data)
-#			print "O: sl = %f an = %f xs = %f ys= %f d = %f x1=%f y1=%f x2=%f y2=%f" % (slope,angle,xscale,yscale,c[2],(c[0][0]/150),(c[0][1]/150),(c[1][0]/150),(c[1][1]/150))
+#			print ("O: sl = %f an = %f xs = %f ys= %f d = %f x1=%f y1=%f x2=%f y2=%f" % (slope,angle,xscale,yscale,c[2],(c[0][0]/150),(c[0][1]/150),(c[1][0]/150),(c[1][1]/150)))
 
 	
 def createMap(params,defDict,symbolList,connectionList):
@@ -458,7 +458,7 @@ if __name__ == '__main__':
 
 	# generate list of star system data
 	starList = createSystems(p)
-	print "there are",len(starList),"systems on the map"
+	print ("there are",len(starList),"systems on the map")
 
 	# check for overlapping systems and flag
 	multipleList = findOverlaps(starList)

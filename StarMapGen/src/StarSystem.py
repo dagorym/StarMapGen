@@ -103,10 +103,10 @@ class StarSystem:
                     else:
                         r5 = randint(1,10)
                         if (10 == r5):
-                            print "Made a black hole"
+                            print ("Made a black hole")
                             self.stars.append("BH")
                         else:
-                            print "Made a neutron star"
+                            print ("Made a neutron star")
                             self.stars.append("NS")
 
     def _getGiantSpectralType(self):
@@ -136,17 +136,17 @@ class StarSystem:
 if __name__ == '__main__':
     p = {'maxX':10,'maxY':10,'minZ':-5,'maxZ':5}
     x = StarSystem(p)
-    print "position = (",x.x,",",x.y,",",x.z,")"
-    print "map Postion =",x.mapPos
-    print "nStars =", x.nStars
-    print "stars =", x.stars,"\n"
+    print ("position = (",x.x,",",x.y,",",x.z,")")
+    print ("map Postion =",x.mapPos)
+    print ("nStars =", x.nStars)
+    print ("stars =", x.stars,"\n")
     
     y = StarSystem(p)
-    print "position = (",y.x,",",y.y,",",y.z,")"
-    print "map Postion =",y.mapPos
-    print "nStars =", y.nStars
-    print "stars =", y.stars
+    print ("position = (",y.x,",",y.y,",",y.z,")")
+    print ("map Postion =",y.mapPos)
+    print ("nStars =", y.nStars)
+    print ("stars =", y.stars)
     
     if (x.mapPos == y.mapPos):
-        print "Overlapping Star Systems"
+        print ("Overlapping Star Systems")
     
