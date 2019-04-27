@@ -14,6 +14,7 @@ class StarSystem:
         self._generateMultiplicity()
         self._generateSpectralType()
         self.drawnPos = (0,0)  # used to know where it was drawn on the map
+        self.name = "" # star system name
     
     def _generatePosition(self):
         """Generates random position of star system within x,y,z boundaries

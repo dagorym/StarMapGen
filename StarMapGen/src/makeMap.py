@@ -458,7 +458,9 @@ if __name__ == '__main__':
 	# parse command-line options for size of map, 2D or 3D, grid type, distance threshold and whatever else I think to add
 
 	# generate list of star system data
-	starList = createSystems(p)
+	#starList = createSystems(p)
+	from loadData import loadData
+	starList = loadData("testSystemData.txt",p)
 	print ("there are",len(starList),"systems on the map")
 
 	# check for overlapping systems and flag
