@@ -10,11 +10,11 @@ class StarSystem:
         self.nStars = 0
         self.stars = []
         self.mParams = params
+        self.name = "" # star system name
         self._generatePosition()
         self._generateMultiplicity()
         self._generateSpectralType()
         self.drawnPos = (0,0)  # used to know where it was drawn on the map
-        self.name = "" # star system name
     
     def _generatePosition(self):
         """Generates random position of star system within x,y,z boundaries
@@ -24,6 +24,7 @@ class StarSystem:
         self.y = randint(1,self.mParams['maxY'])
         self.z = randint(self.mParams['minZ'],self.mParams['maxZ'])
         self.mapPos = (self.x,self.y)
+        self.name = ("OFS-%03d%03d%03d"%(self.x,self.y,self.z))
         
     def _generateMultiplicity(self):
         """Determines the number of stars in the system based on standard
