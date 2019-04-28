@@ -442,7 +442,9 @@ if __name__ == '__main__':
 	# generate list of star system data
 	#starList = createSystems(p)
 	from loadData import loadData
-	starList = loadData("testSystemData.txt",p)
+	starList=[]
+	connectionList=[]
+	loadData("testSystemData.txt",p,starList,connectionList)
 	print ("there are",len(starList),"systems on the map")
 
 	# check for overlapping systems and flag
@@ -453,11 +455,12 @@ if __name__ == '__main__':
 	symbolList = createMapSymbols(starList,multipleList,defDict)
 	
 	# generate stellar distance data
-	connectionList = findConnections(starList)
+#	connectionList = findConnections(starList)
 	
 	# draw map
 	createMap(p,defDict,symbolList,connectionList)
 	
 	#write out the star system data
-	from writeData import writeSystemData
-	writeSystemData(p,starList,connectionList)
+	from writeData import writeSystemData,writeConnectionData
+	writeSystemData(p,starList)
+	writeConnectionData(p,connectionList)
