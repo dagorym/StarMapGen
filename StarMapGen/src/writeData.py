@@ -1,7 +1,7 @@
 def writeSystemData(params,sList):
 	f = open(params['datafile'],'w')
 	for system in sList:
-		f.write('Name:\n')
+		f.write('Name: %s\n'%system.name)
 		f.write("Coordinates: (%d,%d,%d)\n" % (system.x,system.y,system.z))
 		f.write("Number of Stars: %d\n" % system.nStars)
 		f.write("Spectral Types: ")
