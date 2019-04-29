@@ -316,13 +316,61 @@ def writeMapHeader(f,w,h):
 	f.write(r'" xmlns:dc="http://purl.org/dc/elements/1.1/">')
 	f.write("\n")
 	
-def findConnections(sList):
+def findConnections(sList,jList):
 	"""Generate data for system connections
+	
+	This function looks over the list of jumps and computes the start
+	and end point of the jump lines on the map
+	
+	Inputs
+		SList - list of systems
+		jList - List of jump connections
+		
+	Outputs
+		connectionList - List of connection data
+	"""
+	connectionList = []
+	for jump in jList:
+		s=[]
+		for n in jump:
+			for sys in sList:
+				if sys.name == n:
+					s.append(sys)
+					break
+		s1 = s[0]
+		s2 = s[1]
+		p1 = s1.drawnPos
+		p2 = s2.drawnPos
+		d = sqrt((s1.x-s2.x)*(s1.x-s2.x)+(s1.y-s2.y)*(s1.y-s2.y)+(s1.z-s2.z)*(s1.z-s2.z))
+		if (d<15):
+			connectionList.append((p1,p2,d))
+
+	##find "habitable stars"
+	#hList = []
+	#for s in sList:
+	#	if s.hasHabitable():
+	#		hList.append(s)
+	
+	#hListSize = len(hList)
+	#for i in range(hListSize):
+	#	for j in range(i+1,hListSize):
+	#		s1 = hList[i]
+	#		s2 = hList[j]
+	#		p1 = s1.drawnPos
+	#		p2 = s2.drawnPos
+	#		d = sqrt((s1.x-s2.x)*(s1.x-s2.x)+(s1.y-s2.y)*(s1.y-s2.y)+(s1.z-s2.z)*(s1.z-s2.z))
+	#		if (d<15):
+	#			connectionList.append((p1,p2,d))
+	
+	return connectionList
+
+def findJumps(sList):
+	"""Generate data for system jumps
 	
 	This function looks over the list of stars and
 	determines which ones should have connections
-	drawn on the map and then calculates the data
-	for those connections
+	drawn on the map and then builds a list of the 
+	pairs of connected systems
 	
 	Inputs
 		sList - List of stellar data
@@ -330,7 +378,7 @@ def findConnections(sList):
 	Outputs
 		connectionList - List of connection data
 	"""
-	connectionList = []
+	jumpList = []
 	#find "habitable stars"
 	hList = []
 	for s in sList:
@@ -342,13 +390,12 @@ def findConnections(sList):
 		for j in range(i+1,hListSize):
 			s1 = hList[i]
 			s2 = hList[j]
-			p1 = s1.drawnPos
-			p2 = s2.drawnPos
 			d = sqrt((s1.x-s2.x)*(s1.x-s2.x)+(s1.y-s2.y)*(s1.y-s2.y)+(s1.z-s2.z)*(s1.z-s2.z))
 			if (d<15):
-				connectionList.append((p1,p2,d))
+				jumpList.append((s1.name,s2.name))
 	
-	return connectionList
+	return jumpList
+
 
 def drawConnections(f,cList):
 	for c in cList:
@@ -443,8 +490,9 @@ if __name__ == '__main__':
 	from loadData import loadData
 	starList=[]
 	connectionList=[]
-	starList = createSystems(p)
-	#loadData("testSystemData.txt",p,starList,connectionList)
+	jumpList = []
+	#starList = createSystems(p)
+	loadData("testSystemData2.txt",p,starList,jumpList)
 	print ("there are",len(starList),"systems on the map")
 
 	# check for overlapping systems and flag
@@ -455,7 +503,8 @@ if __name__ == '__main__':
 	symbolList = createMapSymbols(starList,multipleList,defDict)
 	
 	# generate stellar distance data
-	connectionList = findConnections(starList)
+	#jumpList = findJumps(starList)
+	connectionList = findConnections(starList,jumpList)
 	
 	# draw map
 	createMap(p,defDict,symbolList,connectionList)
@@ -463,4 +512,4 @@ if __name__ == '__main__':
 	#write out the star system data
 	from writeData import writeSystemData,writeConnectionData
 	writeSystemData(p,starList)
-	writeConnectionData(p,connectionList)
+	writeConnectionData(p,jumpList)

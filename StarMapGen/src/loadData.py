@@ -16,7 +16,8 @@ def loadData(fName,param,sysList,cList):
     for line in f:
         #read in system name
         m = re.match('Name:\s*(.*)',line)
-        l = re.match('Link:\s*(\d+)\s*(\d+)\s*(\d+)\s*(\d+)\s*(\d+)',line)
+#        l = re.match('Link:\s*(\d+)\s*(\d+)\s*(\d+)\s*(\d+)\s*(\d+)',line)
+        l = re.match("Link: '(.*)' '(.*)'",line)
         if (m):
             s=StarSystem(param) #note that this currently creates a random star system that we will overwrite
             #@todo should probably make a default constructor
@@ -46,7 +47,8 @@ def loadData(fName,param,sysList,cList):
     #        print (line,end="")
             sysList.append(s)
         elif (l):
-            cList.append(((int(l.group(1)),int(l.group(2))),(int(l.group(3)),int(l.group(4))),int(l.group(5))))
+#            cList.append(((int(l.group(1)),int(l.group(2))),(int(l.group(3)),int(l.group(4))),int(l.group(5))))
+            cList.append((l.group(1),l.group(2)))
         else:
             print ("No Match")
     f.close()

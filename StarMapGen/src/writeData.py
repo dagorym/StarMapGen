@@ -18,9 +18,9 @@ def writeSystemData(params,sList):
 
 # This function is currently working with the "drawn" coordinates.
 # @todo need to adjust everything to use "real" coordinates and map to "drawn"
-def writeConnectionData(params,cList):
+def writeConnectionData(params,jList):
 	f = open(params['datafile'],'a')
-	for c in cList:
-		f.write("Link: %d %d %d %d %d\n" % (c[0][0],c[0][1],c[1][0],c[1][1],c[2]))
+	for j in jList:
+		f.write("Link: '%s' '%s'\n" % (j[0],j[1]))
 	f.write("\n")
 	f.close()
