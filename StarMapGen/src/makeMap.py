@@ -258,10 +258,11 @@ def createMapSymbols(p,systemList,mList,defDict):
 		for star in starList:
 			data += createSymbol(p,star,starOffset[i],defDict)
 			i += 1
-		data += '<text x="%d" y="%d" font-size="20" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (20*p['scale'],20*p['scale'])
-		if (s.z > 0):
-			data += "+"
-		data += "%d</text>" % s.z
+		if p['printZ']:
+			data += '<text x="%d" y="%d" font-size="20" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (20*p['scale'],20*p['scale'])
+			if (s.z > 0):
+				data += "+"
+			data += "%d</text>" % s.z
 		
 		
 		data += "</g>"
@@ -467,7 +468,7 @@ if __name__ == '__main__':
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
 	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
 #	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
-		,'datafile':"sampleSystemData.txt",'scale':1.5}
+		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
 	# parse command-line options for size of map, 2D or 3D, grid type, distance threshold and whatever else I think to add
 
 	# generate list of star system data
