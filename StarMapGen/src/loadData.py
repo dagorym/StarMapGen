@@ -17,7 +17,7 @@ def loadData(fName,param,sysList,cList):
         #read in system name
         m = re.match('Name:\s*(.*)',line)
 #        l = re.match('Link:\s*(\d+)\s*(\d+)\s*(\d+)\s*(\d+)\s*(\d+)',line)
-        l = re.match("Link: '(.*)' '(.*)'",line)
+        l = re.match('Link: "(.*)" "(.*)"',line)
         if (m):
             s=StarSystem(param) #note that this currently creates a random star system that we will overwrite
             #@todo should probably make a default constructor

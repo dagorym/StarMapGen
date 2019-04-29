@@ -21,6 +21,6 @@ def writeSystemData(params,sList):
 def writeConnectionData(params,jList):
 	f = open(params['datafile'],'a')
 	for j in jList:
-		f.write("Link: '%s' '%s'\n" % (j[0],j[1]))
+		f.write('Link: "%s" "%s"\n' % (j[0],j[1]))
 	f.write("\n")
 	f.close()
