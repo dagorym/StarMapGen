@@ -3,7 +3,7 @@ from random import randint,seed
 from StarSystem import StarSystem
 from math import sqrt,atan,acos,copysign,sin,cos,fabs
 
-def createDef(spType,starData,dDict):
+def createDef(spType,starData,dDict,scale):
 	"""Create the gradient definitions for the star symbols
 	
 	Each star symbol consists of three components that each is
@@ -35,11 +35,11 @@ def createDef(spType,starData,dDict):
 	g2 = "rg" + spType + "b"
 	g3 = "rg" + spType + "c"
 
-	gList = [g1,g2,g3]	
-	
+	gList = [g1,g2,g3]
+
 	if g1 not in dDict:
 #		print ("Adding " + g1 + " definition")
-		r1 = 100 * starData[0]
+		r1 = scale * 100 * starData[0]
 		s1 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g1,r1)
 		s1 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][0])
 		s1 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (starData[1][0])
@@ -48,7 +48,7 @@ def createDef(spType,starData,dDict):
 
 	if g2 not in dDict: 
 #		print ("Adding " + g2 + " definition")
-		r2 = 56.25 * starData[0]
+		r2 = scale * 56.25 * starData[0]
 		s2 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g2,r2)
 		s2 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][1])
 		s2 += '   <stop stop-color="%s" offset="0.54545"/>\n' % (starData[1][1])
@@ -58,7 +58,7 @@ def createDef(spType,starData,dDict):
 
 	if g3 not in dDict:
 #		print ("Adding " + g3 + " definition")
-		r3 = 50 * starData[0]
+		r3 = scale * 50 * starData[0]
 		s3 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g3,r3)
 		s3 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][2])
 		s3 += '   <stop stop-color="%s" stop-opacity=".86432" offset="0.5"/>\n' % (starData[1][2])
@@ -68,16 +68,17 @@ def createDef(spType,starData,dDict):
 
 	return gList
 
-def createSymbol(spType,pos,dDict):
+def createSymbol(p,spType,pos,dDict):
+	scale = p['scale']
 	starData = getParams(spType)
-	gList = createDef(spType,starData,dDict)
-	s = ' <g transform="translate(%f,%f)">\n' %tuple([starData[0]*i for i in pos])
+	gList = createDef(spType,starData,dDict,scale)
+	s = ' <g transform="translate(%f,%f)">\n' %tuple([starData[0]*i*scale for i in pos])
 	if ("NS" == spType or "BH" == spType):
 		s += '  <path style="fill:#ffffff;" d="m -4,-40 a 6.35,54.2 0 0 1 7,-7.5 l -2.8,48.5 z" transform="matrix(-0.8,0.6,-0.6,-0.8,0,0)" />'
-	s += '  <circle r="%f" fill="black"/>\n' % (starData[0]*55.)
-	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*100.,gList[0])
-	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*75.,gList[1])
-	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*50.,gList[2])
+	s += '  <circle r="%f" fill="black"/>\n' % (starData[0]*55.*scale)
+	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*100.*scale,gList[0])
+	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*75.*scale,gList[1])
+	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*50.*scale,gList[2])
 	if ("NS" == spType or "BH" == spType):
 			s += '  <path style="fill:#ffffff;" d="m -4,-40 a 6.35,54.2 0 0 1 7,-7.5 l -2.8,48.5 z" transform="matrix(0.8,-0.6,0.6,0.8,0,0)" />'
 	s += ' </g>\n'
@@ -226,7 +227,7 @@ def getTweakOffset(sList):
 	
 	return offset
 
-def createMapSymbols(systemList,mList,defDict):
+def createMapSymbols(p,systemList,mList,defDict):
 	symbolList = []
 	dupList = {}
 	systemOffsets = [(0,0),(-30,30),(30,-30),(-30,-30),(30,30)]
@@ -255,9 +256,9 @@ def createMapSymbols(systemList,mList,defDict):
 		i = 0
 		starList = sorted(s.stars, key = sortSpecTypeForDisplay)
 		for star in starList:
-			data += createSymbol(star,starOffset[i],defDict)
+			data += createSymbol(p,star,starOffset[i],defDict)
 			i += 1
-		data += '<text x="20" y="20" font-size="20" font-family="Ariel,Helvetica,sans-serif" fill="white">'
+		data += '<text x="%d" y="%d" font-size="20" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (20*p['scale'],20*p['scale'])
 		if (s.z > 0):
 			data += "+"
 		data += "%d</text>" % s.z
@@ -344,23 +345,6 @@ def findConnections(sList,jList):
 		d = sqrt((s1.x-s2.x)*(s1.x-s2.x)+(s1.y-s2.y)*(s1.y-s2.y)+(s1.z-s2.z)*(s1.z-s2.z))
 		if (d<15):
 			connectionList.append((p1,p2,d))
-
-	##find "habitable stars"
-	#hList = []
-	#for s in sList:
-	#	if s.hasHabitable():
-	#		hList.append(s)
-	
-	#hListSize = len(hList)
-	#for i in range(hListSize):
-	#	for j in range(i+1,hListSize):
-	#		s1 = hList[i]
-	#		s2 = hList[j]
-	#		p1 = s1.drawnPos
-	#		p2 = s2.drawnPos
-	#		d = sqrt((s1.x-s2.x)*(s1.x-s2.x)+(s1.y-s2.y)*(s1.y-s2.y)+(s1.z-s2.z)*(s1.z-s2.z))
-	#		if (d<15):
-	#			connectionList.append((p1,p2,d))
 	
 	return connectionList
 
@@ -483,7 +467,7 @@ if __name__ == '__main__':
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
 	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
 #	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
-		,'datafile':"sampleSystemData.txt"}
+		,'datafile':"sampleSystemData.txt",'scale':1.5}
 	# parse command-line options for size of map, 2D or 3D, grid type, distance threshold and whatever else I think to add
 
 	# generate list of star system data
@@ -504,7 +488,7 @@ if __name__ == '__main__':
 	
 	defDict = {} # dictionary of gradient definitions for star symbols in SVG file
 	# generate symbols for each system
-	symbolList = createMapSymbols(starList,multipleList,defDict)
+	symbolList = createMapSymbols(p,starList,multipleList,defDict)
 	
 	# generate stellar distance data
 	connectionList = findConnections(starList,jumpList)
