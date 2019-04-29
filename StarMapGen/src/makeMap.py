@@ -481,18 +481,22 @@ def createMap(params,defDict,symbolList,connectionList):
 if __name__ == '__main__':
 #	seed(3)  # this gives two star systems on the same (x,y) with p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12}
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
-	p = {'maxX':44,'maxY':24,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
+	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
 #	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
 		,'datafile':"sampleSystemData.txt"}
 	# parse command-line options for size of map, 2D or 3D, grid type, distance threshold and whatever else I think to add
 
 	# generate list of star system data
 	from loadData import loadData
-	starList=[]
-	connectionList=[]
-	jumpList = []
-	#starList = createSystems(p)
-	loadData("testSystemData2.txt",p,starList,jumpList)
+	loadFile = "FrontierData.txt"
+	if loadFile: # read the data from the specified file
+		starList=[]
+		jumpList = []
+		loadData(loadFile,p,starList,jumpList)
+	else:  # generate the data randomly
+		starList = createSystems(p)
+		jumpList = findJumps(starList)
+
 	print ("there are",len(starList),"systems on the map")
 
 	# check for overlapping systems and flag
@@ -503,7 +507,6 @@ if __name__ == '__main__':
 	symbolList = createMapSymbols(starList,multipleList,defDict)
 	
 	# generate stellar distance data
-	#jumpList = findJumps(starList)
 	connectionList = findConnections(starList,jumpList)
 	
 	# draw map
