@@ -343,7 +343,7 @@ def findConnections(sList,jList):
 		s2 = s[1]
 		p1 = s1.drawnPos
 		p2 = s2.drawnPos
-		d = sqrt((s1.x-s2.x)*(s1.x-s2.x)+(s1.y-s2.y)*(s1.y-s2.y)+(s1.z-s2.z)*(s1.z-s2.z))
+		d = int(sqrt((s1.x-s2.x)*(s1.x-s2.x)+(s1.y-s2.y)*(s1.y-s2.y)+(s1.z-s2.z)*(s1.z-s2.z))+0.5)
 		if (d<15):
 			connectionList.append((p1,p2,d))
 	
@@ -375,14 +375,14 @@ def findJumps(sList):
 		for j in range(i+1,hListSize):
 			s1 = hList[i]
 			s2 = hList[j]
-			d = sqrt((s1.x-s2.x)*(s1.x-s2.x)+(s1.y-s2.y)*(s1.y-s2.y)+(s1.z-s2.z)*(s1.z-s2.z))
+			d = int(sqrt((s1.x-s2.x)*(s1.x-s2.x)+(s1.y-s2.y)*(s1.y-s2.y)+(s1.z-s2.z)*(s1.z-s2.z))+0.5)
 			if (d<15):
 				jumpList.append((s1.name,s2.name))
 	
 	return jumpList
 
 
-def drawConnections(f,cList):
+def drawConnections(p,f,cList):
 	for c in cList:
 		#draw the line
 		data = '<g><line style="stroke:rgb(255,255,255); stroke-width:5"' 
@@ -421,7 +421,7 @@ def drawConnections(f,cList):
 		xMid = (c[0][0]+c[1][0])/2 + xscale * offset[0]
 		yMid = (c[0][1]+c[1][1])/2 + yscale * offset[1]# - (1-yscale) * copysign(20,slope)
 #		if (fabs(angle)<10): yMid -= copysign(10,slope)
-		data += '<text x="%d" y="%d" font-size="40" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (xMid,yMid)
+		data += '<text x="%d" y="%d" font-size="%d" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (xMid,yMid,40*p['scale'])
 		data += "%d</text></g>" % c[2]
 #		if (fabs(angle) < 20 and fabs(angle) >=10): 
 		f.write(data)
@@ -446,16 +446,16 @@ def createMap(params,defDict,symbolList,connectionList):
 	yMax = params['maxY']*150 + 75
 	for i in range(params['maxX']+1):
 		x = i*150+75
-		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(100,100,100;stroke-width:5" />' %(x,yMin,x,yMax)
+		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(150,150,150;stroke-width:5" />' %(x,yMin,x,yMax)
 		f.write(code)
 	for i in range(params['maxY']+1):
 		y = i*150+75
-		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(100,100,100;stroke-width:5" />' %(xMin,y,xMax,y)
+		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(150,150,150;stroke-width:5" />' %(xMin,y,xMax,y)
 		f.write(code)
 	f.write('</g>\n')
 	
 	# draw connections and label
-	drawConnections(f,connectionList)
+	drawConnections(params,f,connectionList)
 	# add star symbols (this comes second so they will be on top)
 	writeSymbols(f,symbolList)
 	# close off file
