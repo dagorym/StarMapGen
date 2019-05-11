@@ -446,11 +446,11 @@ def createMap(params,defDict,symbolList,connectionList):
 	yMax = params['maxY']*150 + 75
 	for i in range(params['maxX']+1):
 		x = i*150+75
-		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(150,150,150;stroke-width:5" />' %(x,yMin,x,yMax)
+		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(100,100,100); stroke-width:3" />' %(x,yMin,x,yMax)
 		f.write(code)
 	for i in range(params['maxY']+1):
 		y = i*150+75
-		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(150,150,150;stroke-width:5" />' %(xMin,y,xMax,y)
+		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(100,100,100); stroke-width:3" />' %(xMin,y,xMax,y)
 		f.write(code)
 	f.write('</g>\n')
 	
