@@ -422,13 +422,23 @@ def drawConnections(p,f,cList):
 		yMid = (c[0][1]+c[1][1])/2 + yscale * offset[1]# - (1-yscale) * copysign(20,slope)
 #		if (fabs(angle)<10): yMid -= copysign(10,slope)
 		data += '<text x="%d" y="%d" font-size="%d" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (xMid,yMid,40*p['scale'])
-		data += "%d</text></g>" % c[2]
+		data += "%d</text></g>\n" % c[2]
 #		if (fabs(angle) < 20 and fabs(angle) >=10): 
 		f.write(data)
 #			print ("O: sl = %f an = %f xs = %f ys= %f d = %f x1=%f y1=%f x2=%f y2=%f" % (slope,angle,xscale,yscale,c[2],(c[0][0]/150),(c[0][1]/150),(c[1][0]/150),(c[1][1]/150)))
 
-	
-def createMap(params,defDict,symbolList,connectionList):
+def writeNames(p,f,sList):
+	'''This adds in the names of the star systems.
+	Right now it just draws them to the upper left of the 
+	star's symbol'''
+	offset = p['scale']*25
+	for s in sList:
+		data = '<g><text x="%d" y="%d" font-size="%d"' % (s.drawnPos[0]+offset,s.drawnPos[1]-offset,50*p['scale'])
+		data += ' font-family="Copperplate Gothic Bold,Times,serif" fill="white">'
+		data += "%s</text></g>\n" % s.name
+		f.write(data)
+
+def createMap(params,defDict,symbolList,connectionList,starList):
 	f = open(params['filename'],'w')
 	# create header
 	w = (params['maxX']+1)*150
@@ -463,6 +473,10 @@ def createMap(params,defDict,symbolList,connectionList):
 	# add star symbols (this comes second so they will be on top)
 	f.write('<g id="stars" inkscape:groupmode="layer" inkscape:label="Stars">\n')
 	writeSymbols(f,symbolList)
+	f.write('</g>\n')
+	# add star names
+	f.write('<g id="names" inkscape:groupmode="layer" inkscape:label="Names">\n')
+	writeNames(params,f,starList)
 	f.write('</g>\n')
 	# close off file
 	f.write("</svg>")
@@ -501,7 +515,7 @@ if __name__ == '__main__':
 	connectionList = findConnections(starList,jumpList)
 	
 	# draw map
-	createMap(p,defDict,symbolList,connectionList)
+	createMap(p,defDict,symbolList,connectionList,starList)
 	
 	#write out the star system data
 	from writeData import writeSystemData,writeConnectionData
