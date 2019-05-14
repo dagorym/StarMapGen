@@ -437,9 +437,11 @@ def createMap(params,defDict,symbolList,connectionList):
 	# add definitions
 	writeDefs(f,defDict)
 	# add background - Note: we should make the svg canvas black instead
+	f.write('<g id="background" inkscape:groupmode="layer" inkscape:label="Background">\n')
 	f.write(' <rect height="%u" width="%u" y="0" x="0" fill="#000"/>\n' %(h,w))
+	f.write('</g>\n')
 	# add grid
-	f.write('<g>\n')
+	f.write('<g id="grid" inkscape:groupmode="layer" inkscape:label="Grid">\n')
 	xMin = 75
 	yMin = 75
 	xMax = params['maxX']*150 + 75
@@ -455,9 +457,13 @@ def createMap(params,defDict,symbolList,connectionList):
 	f.write('</g>\n')
 	
 	# draw connections and label
+	f.write('<g id="jumps" inkscape:groupmode="layer" inkscape:label="Jumps">\n')
 	drawConnections(params,f,connectionList)
+	f.write('</g>\n')
 	# add star symbols (this comes second so they will be on top)
+	f.write('<g id="stars" inkscape:groupmode="layer" inkscape:label="Stars">\n')
 	writeSymbols(f,symbolList)
+	f.write('</g>\n')
 	# close off file
 	f.write("</svg>")
 	f.close()
