@@ -75,6 +75,7 @@ def createSymbol(p,spType,pos,dDict):
 	s = ' <g transform="translate(%f,%f)">\n' %tuple([starData[0]*i*scale for i in pos])
 	if ("NS" == spType or "BH" == spType):
 		s += '  <path style="fill:#ffffff;" d="m -4,-40 a 6.35,54.2 0 0 1 7,-7.5 l -2.8,48.5 z" transform="matrix(-0.8,0.6,-0.6,-0.8,0,0)" />'
+		scale = 1
 	s += '  <circle r="%f" fill="black"/>\n' % (starData[0]*55.*scale)
 	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*100.*scale,gList[0])
 	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*75.*scale,gList[1])
