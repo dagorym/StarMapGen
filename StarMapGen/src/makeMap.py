@@ -3,7 +3,7 @@ from random import randint,seed
 from StarSystem import StarSystem
 from math import sqrt,atan,acos,copysign,sin,cos,fabs
 
-def createDef(spType,starData,dDict,scale):
+def createDef(spType,starData,dDict):
 	"""Create the gradient definitions for the star symbols
 	
 	Each star symbol consists of three components that each is
@@ -36,10 +36,9 @@ def createDef(spType,starData,dDict,scale):
 	g3 = "rg" + spType + "c"
 
 	gList = [g1,g2,g3]
-
 	if g1 not in dDict:
 #		print ("Adding " + g1 + " definition")
-		r1 = scale * 100 * starData[0]
+		r1 = 100 * starData[0]
 		s1 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g1,r1)
 		s1 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][0])
 		s1 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (starData[1][0])
@@ -48,7 +47,7 @@ def createDef(spType,starData,dDict,scale):
 
 	if g2 not in dDict: 
 #		print ("Adding " + g2 + " definition")
-		r2 = scale * 56.25 * starData[0]
+		r2 = 56.25 * starData[0]
 		s2 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g2,r2)
 		s2 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][1])
 		s2 += '   <stop stop-color="%s" offset="0.54545"/>\n' % (starData[1][1])
@@ -58,7 +57,7 @@ def createDef(spType,starData,dDict,scale):
 
 	if g3 not in dDict:
 #		print ("Adding " + g3 + " definition")
-		r3 = scale * 50 * starData[0]
+		r3 = 50 * starData[0]
 		s3 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g3,r3)
 		s3 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][2])
 		s3 += '   <stop stop-color="%s" stop-opacity=".86432" offset="0.5"/>\n' % (starData[1][2])
@@ -71,15 +70,15 @@ def createDef(spType,starData,dDict,scale):
 def createSymbol(p,spType,pos,dDict):
 	scale = p['scale']
 	starData = getParams(spType)
-	gList = createDef(spType,starData,dDict,scale)
-	s = ' <g transform="translate(%f,%f)">\n' %tuple([starData[0]*i*scale for i in pos])
+	gList = createDef(spType,starData,dDict)
+	s = ' <g transform="matrix(%f,0,0,%f,%f,%f)">\n' %(scale,scale,starData[0]*pos[0]*scale,starData[0]*pos[1]*scale)
 	if ("NS" == spType or "BH" == spType):
 		s += '  <path style="fill:#ffffff;" d="m -4,-40 a 6.35,54.2 0 0 1 7,-7.5 l -2.8,48.5 z" transform="matrix(-0.8,0.6,-0.6,-0.8,0,0)" />'
 		scale = 1
-	s += '  <circle r="%f" fill="black"/>\n' % (starData[0]*55.*scale)
-	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*100.*scale,gList[0])
-	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*75.*scale,gList[1])
-	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*50.*scale,gList[2])
+	s += '  <circle r="%f" fill="black"/>\n' % (starData[0]*55.)
+	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*100.,gList[0])
+	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*75.,gList[1])
+	s += '  <circle r="%f" fill="url(#%s)"/>\n' % (starData[0]*50.,gList[2])
 	if ("NS" == spType or "BH" == spType):
 			s += '  <path style="fill:#ffffff;" d="m -4,-40 a 6.35,54.2 0 0 1 7,-7.5 l -2.8,48.5 z" transform="matrix(0.8,-0.6,0.6,0.8,0,0)" />'
 	s += ' </g>\n'
@@ -500,6 +499,7 @@ if __name__ == '__main__':
 		jumpList = []
 		loadData(loadFile,p,starList,jumpList)
 	else:  # generate the data randomly
+		p['printZ'] = True;
 		starList = createSystems(p)
 		jumpList = findJumps(starList)
 
