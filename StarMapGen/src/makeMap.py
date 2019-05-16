@@ -3,6 +3,8 @@ from random import randint,seed
 from StarSystem import StarSystem
 from math import sqrt,atan,acos,copysign,sin,cos,fabs
 
+p2mm = 0.26458333333 #/25.4/96
+
 def createDef(spType,starData,dDict):
 	"""Create the gradient definitions for the star symbols
 	
@@ -68,7 +70,7 @@ def createDef(spType,starData,dDict):
 	return gList
 
 def createSymbol(p,spType,pos,dDict):
-	scale = p['scale']
+	scale = p['scale'] * p2mm
 	starData = getParams(spType)
 	gList = createDef(spType,starData,dDict)
 	s = ' <g transform="matrix(%f,0,0,%f,%f,%f)">\n' %(scale,scale,starData[0]*pos[0]*scale,starData[0]*pos[1]*scale)
@@ -250,7 +252,7 @@ def createMapSymbols(p,systemList,mList,defDict):
 		# generate symbol data for each star in system
 		xPos = s.mapPos[0]*150+systemOffsets[dupCount][0]+tweakOffset[0]
 		yPos = s.mapPos[1]*150+systemOffsets[dupCount][1]+tweakOffset[1]
-		data = '<g transform="translate(%f,%f)">' % (xPos,yPos)
+		data = '<g transform="translate(%f,%f)">' % (xPos* p2mm,yPos* p2mm)
 		s.drawnPos = (xPos-tweakOffset[0],yPos-tweakOffset[1]) #keep track of where center of system is drawn for later
 
 		i = 0
@@ -259,7 +261,7 @@ def createMapSymbols(p,systemList,mList,defDict):
 			data += createSymbol(p,star,starOffset[i],defDict)
 			i += 1
 		if p['printZ']:
-			data += '<text x="%d" y="%d" font-size="20" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (20*p['scale'],20*p['scale'])
+			data += '<text x="%f" y="%f" font-size="20" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (20*p['scale'],20*p['scale'])
 			if (s.z > 0):
 				data += "+"
 			data += "%d</text>" % s.z
@@ -315,7 +317,8 @@ def writeMapHeader(f,w,h):
 	f.write(r'<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ')
 	params = "%u %u" % (w,h)
 	f.write(params)
-	f.write(r'" xmlns:dc="http://purl.org/dc/elements/1.1/">')
+	f.write ('" width="%d" height="%d"' % (w/p2mm,h/p2mm))
+	f.write(r' xmlns:dc="http://purl.org/dc/elements/1.1/">')
 	f.write("\n")
 	
 def findConnections(sList,jList):
@@ -385,8 +388,8 @@ def findJumps(sList):
 def drawConnections(p,f,cList):
 	for c in cList:
 		#draw the line
-		data = '<g><line style="stroke:rgb(255,255,255); stroke-width:5"' 
-		data += ' x1="%d" y1="%d" x2="%d" y2="%d" />\n' % (c[0][0],c[0][1],c[1][0],c[1][1])
+		data = '<g><line style="stroke:rgb(255,255,255); stroke-width:%f"' % (5* p2mm) 
+		data += ' x1="%f" y1="%f" x2="%f" y2="%f" />\n' % (c[0][0] * p2mm,c[0][1] * p2mm,c[1][0] * p2mm,c[1][1] * p2mm)
 		#draw the label
 		offset = (-45.,-45.);
 		xscale = 0.;
@@ -421,7 +424,7 @@ def drawConnections(p,f,cList):
 		xMid = (c[0][0]+c[1][0])/2 + xscale * offset[0]
 		yMid = (c[0][1]+c[1][1])/2 + yscale * offset[1]# - (1-yscale) * copysign(20,slope)
 #		if (fabs(angle)<10): yMid -= copysign(10,slope)
-		data += '<text x="%d" y="%d" font-size="%d" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (xMid,yMid,40*p['scale'])
+		data += '<text x="%f" y="%f" font-size="%f" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (xMid * p2mm,yMid * p2mm,40*p['scale'] * p2mm)
 		data += "%d</text></g>\n" % c[2]
 #		if (fabs(angle) < 20 and fabs(angle) >=10): 
 		f.write(data)
@@ -433,7 +436,7 @@ def writeNames(p,f,sList):
 	star's symbol'''
 	offset = p['scale']*25
 	for s in sList:
-		data = '<g><text x="%d" y="%d" font-size="%d"' % (s.drawnPos[0]+offset,s.drawnPos[1]-offset,50*p['scale'])
+		data = '<g><text x="%f" y="%f" font-size="%f"' % ((s.drawnPos[0]+offset) * p2mm,(s.drawnPos[1]-offset) * p2mm,50*p['scale'] * p2mm)
 		data += ' font-family="Copperplate Gothic Bold,Times,serif" fill="white">'
 		data += "%s</text></g>\n" % s.name
 		f.write(data)
@@ -441,8 +444,8 @@ def writeNames(p,f,sList):
 def createMap(params,defDict,symbolList,connectionList,starList):
 	f = open(params['filename'],'w')
 	# create header
-	w = (params['maxX']+1)*150
-	h = (params['maxY']+1)*150
+	w = (params['maxX']+1)*150 * p2mm
+	h = (params['maxY']+1)*150 * p2mm
 	writeMapHeader(f,w,h)
 	# add definitions
 	writeDefs(f,defDict)
@@ -458,11 +461,11 @@ def createMap(params,defDict,symbolList,connectionList,starList):
 	yMax = params['maxY']*150 + 75
 	for i in range(params['maxX']+1):
 		x = i*150+75
-		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(100,100,100); stroke-width:3" />' %(x,yMin,x,yMax)
+		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(100,100,100); stroke-width:%f" />' %(x * p2mm,yMin * p2mm,x * p2mm,yMax * p2mm, 3*p2mm)
 		f.write(code)
 	for i in range(params['maxY']+1):
 		y = i*150+75
-		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(100,100,100); stroke-width:3" />' %(xMin,y,xMax,y)
+		code = '<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke:rgb(100,100,100); stroke-width:%f" />' %(xMin * p2mm,y * p2mm,xMax * p2mm,y * p2mm, 3*p2mm)
 		f.write(code)
 	f.write('</g>\n')
 	
