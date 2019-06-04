@@ -39,39 +39,65 @@ def createDef(spType,starData,dDict):
 
 	gList = [g1,g2,g3]
 	if g1 not in dDict:
+		color = interpolateColors(spType,0)
 #		print ("Adding " + g1 + " definition")
 		r1 = 100 * starData[0]
 		s1 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g1,r1)
-		s1 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][0])
-		s1 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (starData[1][0])
+		s1 += '   <stop stop-color="%s" offset="0"/>\n' % (color)
+		s1 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (color)
 		s1 += '  </radialGradient>\n'
 		dDict[g1]=s1
 
 	if g2 not in dDict: 
+		color = interpolateColors(spType,1)
 #		print ("Adding " + g2 + " definition")
 		r2 = 56.25 * starData[0]
 		s2 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g2,r2)
-		s2 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][1])
-		s2 += '   <stop stop-color="%s" offset="0.54545"/>\n' % (starData[1][1])
-		s2 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (starData[1][1])
+		s2 += '   <stop stop-color="%s" offset="0"/>\n' % (color)
+		s2 += '   <stop stop-color="%s" offset="0.54545"/>\n' % (color)
+		s2 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (color)
 		s2 += '  </radialGradient>\n'
 		dDict[g2]=s2
 
 	if g3 not in dDict:
+		color = interpolateColors(spType,2)
 #		print ("Adding " + g3 + " definition")
 		r3 = 50 * starData[0]
 		s3 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g3,r3)
-		s3 += '   <stop stop-color="%s" offset="0"/>\n' % (starData[1][2])
-		s3 += '   <stop stop-color="%s" stop-opacity=".86432" offset="0.5"/>\n' % (starData[1][2])
-		s3 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (starData[1][2])
+		s3 += '   <stop stop-color="%s" offset="0"/>\n' % (color)
+		s3 += '   <stop stop-color="%s" stop-opacity=".86432" offset="0.5"/>\n' % (color)
+		s3 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (color)
 		s3 += '  </radialGradient>\n'
 		dDict[g3]=s3
 
 	return gList
 
+def interpolateColors(sp,index):
+	spVal = specTypeToValue(sp)
+	(low,high) = getBracketValues(spVal)
+	val = spVal % 10
+	lParams = getParams2(low)
+	hParams = getParams2(high)
+	c1 = lParams[1][index]
+	c2 = hParams[1][index]
+	r1 = int(c1[1:3],16)
+	r2 = int(c2[1:3],16)
+	g1 = int(c1[3:5],16)
+	g2 = int(c2[3:5],16)
+	b1 = int(c1[5:7],16)
+	b2 = int(c2[5:7],16)
+	r = hex(r1 + (r2-r1)//10*val)
+	g = hex(g1 + (g2-g1)//10*val)
+	b = hex(b1 + (b2-b1)//10*val)
+	color = "#" + r[2:4] + g[2:4] + b[2:4]
+	if (len(color) == 6): color += "0"
+	return color
+
 def createSymbol(p,spType,pos,dDict):
 	scale = p['scale'] * p2mm
-	starData = getParams(spType)
+	spVal = specTypeToValue(spType)
+	starData = getParams2(spVal)
+	starData[0] = getSize(spVal)
 	gList = createDef(spType,starData,dDict)
 	s = ' <g transform="matrix(%f,0,0,%f,%f,%f)">\n' %(scale,scale,starData[0]*pos[0]*scale,starData[0]*pos[1]*scale)
 	if ("NS" == spType or "BH" == spType):
@@ -108,35 +134,90 @@ def getParams(spType):
 		'NS': [0.375,["#c86400","#804000","#ff8000"]], 
 		'BH': [0.375,["#0000ff","#ff0000","#000000"]], 
 	}.get(spType,[0.25,["rgM0a","rgM0b","rgM0c"]]);
+
+def getParams2(spType):
+	return {
+		500: [0.75,["#5579ff","#1345ff","#9cb2ff"]],  #O0V #TODO currently using B0 colors, get unique
+		510: [0.75,["#5579ff","#1345ff","#9cb2ff"]],  #B0V
+		520: [0.5,["#688bff","#2256ff","#b9c9ff"]],   #A0V
+		330: [0.75,["#9cb2ff","#607aff","#e0e4ff"]],  #F0III
+		340: [0.75,["#fffcb6","#fffa72","#fff8fc"]],  #G0III
+		350: [0.75,["#ffc58d","#ff9228","#ffeedd"]],  #K0III
+		360: [0.75,["#ff9f41","#ff7e00","#ffc38b"]],  #M0III
+		370: [0.75,["#ff26b0","#ff4000","#ff64c8"]],  #L0III (not real but needed for extrapolation)
+		130: [1,["#9cb2ff","#607aff","#e0e4ff"]],     #F0I
+		140: [1,["#fffcb6","#fffa72","#fff8fc"]],     #G0I
+		150: [1,["#ffc58d","#ff9228","#ffeedd"]],     #K0I
+		160: [1,["#ff9f41","#ff7e00","#ffc38b"]],     #M0I
+		170: [1,["#ff26b0","#ff4000","#ff64c8"]],     #L0I (not real but needed for extrapolation)
+		530: [0.5,["#9cb2ff","#607aff","#e0e4ff"]],   #F0V
+		540: [0.5,["#fffcb6","#fffa72","#fff8fc"]],   #G0V
+		550: [0.5,["#ffc58d","#ff9228","#ffeedd"]],   #K0V
+		560: [0.25,["#ff9f41","#ff7e00","#ffc38b"]],  #M0V
+		570: [0.20,["#ff26b0","#ff4000","#ff64c8"]],  #BD
+		600: [0.25,["#5579ff","#1345ff","#9cb2ff"]],  #WD
+		700: [0.375,["#c86400","#804000","#ff8000"]], #NS
+		800: [0.375,["#0000ff","#ff0000","#000000"]], #BH
+	}.get(spType,[0.25,["rgM0a","rgM0b","rgM0c"]]);
 	
+def specTypeToValue(sp):
+	if ("BD" == sp): return 570
+	if ("WD" == sp): return 600
+	if ("NS" == sp): return 700
+	if ("BH" == sp): return 800
+	specOrder = ["O","B","A","F","G","K","M"]
+	type = 10*specOrder.index(sp[0:1])
+	type += int(sp[1:2])
+	spClass = sp[2:]
+	if ("" == spClass): return type+500
+	if ("III" == spClass): return type+300
+	if ("I" == spClass): return type+100
+	if ("II" == spClass): return type+200
+	if ("IV" == spClass): return type+400
+
+def getSize(spVal):
+	val = spVal//10*10
+	p = getParams2(val)
+	return p[0]
+
+def getBracketValues(spVal):
+	if (spVal >= 570): return (spVal,spVal)
+	low = int(spVal)//10*10
+	return (low,low+10)
+
 def sortSpecTypeForDisplay(st):
-	rank = {
-		#supergiants
-        'F0I': 30,
-        'G0I': 40,
-        'K0I': 50,
-        'M0I': 60,
-        #giants
-        'F0III': 130,
-        'G0III': 140,
-        'K0III': 150,
-        'M0III': 160,
-        #main sequence
-        'O0': 110,
-        'B0': 120,
-        'A0': 220,
-        'F0': 230,
-        'G0': 240,
-        'K0': 250,
-        'M0': 500,
-        #brown dwarfs
-        'BD': 2000,
-        #collapsars
-        'WD': 1000,
-        'NS': 400,
-        'BH': 410,    
-    }
-	return rank[st]
+	if ("BD" == st): return 2000
+	if ("WD" == st): return 1000
+	return specTypeToValue(st)
+
+	#rank = {
+	#	#supergiants
+ #       'F0I': 30,
+ #       'G0I': 40,
+ #       'K0I': 50,
+ #       'M0I': 60,
+ #       #giants
+ #       'F0III': 130,
+ #       'G0III': 140,
+ #       'K0III': 150,
+ #       'M0III': 160,
+ #       #main sequence
+ #       'O0': 110,
+ #       'B0': 120,
+ #       'A0': 220,
+ #       'F0': 230,
+ #       'G0': 240,
+ #       'K0': 250,
+ #       'M0': 500,
+	#	'M5': 550,
+ #       #brown dwarfs
+ #       'BD': 2000,
+ #       #collapsars
+ #       'WD': 1000,
+ #       'NS': 400,
+ #       'BH': 410,    
+ #   }
+	#return rank[st]
 	
 def writeDefs(f,dDict):
 	f.write(" <defs>\n")
@@ -188,7 +269,7 @@ def getTweakOffset(sList):
 	offset = (0,0)
 	largeStarCount = 0
 	for s in sList:
-		if (sortSpecTypeForDisplay(s)<400):
+		if (sortSpecTypeForDisplay(s)<560):
 			largeStarCount = largeStarCount +1
 	nStars = len(sList)
 	t1 = (getStarOffsetList(nStars))[0]
@@ -489,14 +570,14 @@ def createMap(params,defDict,symbolList,connectionList,starList):
 if __name__ == '__main__':
 #	seed(3)  # this gives two star systems on the same (x,y) with p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12}
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
-	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
-#	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
+#	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
+	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"ExtendedFrontierMap.svg"
 		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
 	# parse command-line options for size of map, 2D or 3D, grid type, distance threshold and whatever else I think to add
 
 	# generate list of star system data
 	from loadData import loadData
-	loadFile = "FrontierData.txt"
+	loadFile = "EFMData.txt"
 	if loadFile: # read the data from the specified file
 		starList=[]
 		jumpList = []
