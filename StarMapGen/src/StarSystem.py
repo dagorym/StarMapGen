@@ -1,7 +1,8 @@
 from random import randint
 
+
 class StarSystem:
-    
+    id = 0
     def __init__(self,params):
         self.x = 0
         self.y = 0
@@ -24,7 +25,9 @@ class StarSystem:
         self.y = randint(1,self.mParams['maxY'])
         self.z = randint(self.mParams['minZ'],self.mParams['maxZ'])
         self.mapPos = (self.x,self.y)
-        self.name = ("OFS-%03d%03d%03d"%(self.x,self.y,self.z))
+#        self.name = ("OFS-%03d%03d%03d"%(self.x,self.y,self.z))
+        self.name = ("S%03d"%(StarSystem.id))
+        StarSystem.id += 1
         
     def _generateMultiplicity(self):
         """Determines the number of stars in the system based on standard
@@ -200,12 +203,14 @@ class StarSystem:
 if __name__ == '__main__':
     p = {'maxX':10,'maxY':10,'minZ':-5,'maxZ':5}
     x = StarSystem(p)
+    print ("Name: ",x.name)
     print ("position = (",x.x,",",x.y,",",x.z,")")
     print ("map Postion =",x.mapPos)
     print ("nStars =", x.nStars)
     print ("stars =", x.stars,"\n")
     
     y = StarSystem(p)
+    print ("Name: ",y.name)
     print ("position = (",y.x,",",y.y,",",y.z,")")
     print ("map Postion =",y.mapPos)
     print ("nStars =", y.nStars)
