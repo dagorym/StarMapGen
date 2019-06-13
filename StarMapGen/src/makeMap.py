@@ -144,24 +144,25 @@ def getParams2(spType):
 		340: [0.75,["#fffcb6","#fffa72","#fff8fc"]],  #G0III
 		350: [0.75,["#ffc58d","#ff9228","#ffeedd"]],  #K0III
 		360: [0.75,["#ff9f41","#ff7e00","#ffc38b"]],  #M0III
-		370: [0.75,["#ff26b0","#ff4000","#ff64c8"]],  #L0III (not real but needed for extrapolation)
+		370: [0.75,["#ff6040","#ff4000","#ff8030"]],  #L0III (not real but needed for extrapolation)
 		130: [1,["#9cb2ff","#607aff","#e0e4ff"]],     #F0I
 		140: [1,["#fffcb6","#fffa72","#fff8fc"]],     #G0I
 		150: [1,["#ffc58d","#ff9228","#ffeedd"]],     #K0I
 		160: [1,["#ff9f41","#ff7e00","#ffc38b"]],     #M0I
-		170: [1,["#ff26b0","#ff4000","#ff64c8"]],     #L0I (not real but needed for extrapolation)
+		170: [1,["#ff6040","#ff4000","#ff8030"]],     #L0I (not real but needed for extrapolation)
 		530: [0.5,["#9cb2ff","#607aff","#e0e4ff"]],   #F0V
 		540: [0.5,["#fffcb6","#fffa72","#fff8fc"]],   #G0V
 		550: [0.5,["#ffc58d","#ff9228","#ffeedd"]],   #K0V
 		560: [0.25,["#ff9f41","#ff7e00","#ffc38b"]],  #M0V
-		570: [0.20,["#ff26b0","#ff4000","#ff64c8"]],  #BD
+		570: [0.20,["#ff6040","#ff4000","#ff8030"]],  #L0V
+		580: [0.20,["#ff26b0","#ff4000","#ff64c8"]],  #BD
 		600: [0.25,["#5579ff","#1345ff","#9cb2ff"]],  #WD
 		700: [0.375,["#c86400","#804000","#ff8000"]], #NS
 		800: [0.375,["#0000ff","#ff0000","#000000"]], #BH
 	}.get(spType,[0.25,["rgM0a","rgM0b","rgM0c"]]);
 	
 def specTypeToValue(sp):
-	if ("BD" == sp): return 570
+	if ("BD" == sp): return 580
 	if ("WD" == sp): return 600
 	if ("NS" == sp): return 700
 	if ("BH" == sp): return 800
@@ -570,14 +571,17 @@ def createMap(params,defDict,symbolList,connectionList,starList):
 if __name__ == '__main__':
 #	seed(3)  # this gives two star systems on the same (x,y) with p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12}
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
-#	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
-	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"ExtendedFrontierMap.svg"
-		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
+# Random map parameters
+	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
+		,'datafile':"sampleSystemData.txt",'scale':1.0,'printZ':False}
+# Big SF Map
+#	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"ExtendedFrontierMap.svg"
+#		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
 	# parse command-line options for size of map, 2D or 3D, grid type, distance threshold and whatever else I think to add
 
 	# generate list of star system data
 	from loadData import loadData
-	loadFile = "EFMData.txt"
+	loadFile = ""#"EFMData.txt"
 	if loadFile: # read the data from the specified file
 		starList=[]
 		jumpList = []
