@@ -343,7 +343,7 @@ def createMapSymbols(p,systemList,mList,defDict):
 			data += createSymbol(p,star,starOffset[i],defDict)
 			i += 1
 		if p['printZ']:
-			data += '<text x="%f" y="%f" font-size="20" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (20*p['scale'],20*p['scale'])
+			data += '<text x="%f" y="%f" font-size="%d" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (20*p['scale']*p2mm,20*p['scale']*p2mm,20*p2mm)
 			if (s.z > 0):
 				data += "+"
 			data += "%d</text>" % s.z
