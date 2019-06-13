@@ -573,7 +573,7 @@ if __name__ == '__main__':
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
 # Random map parameters
 	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
-		,'datafile':"sampleSystemData.txt",'scale':1.0,'printZ':False}
+		,'datafile':"sampleSystemData.txt",'scale':1.0,'printZ':True}
 # Big SF Map
 #	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"ExtendedFrontierMap.svg"
 #		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
@@ -587,7 +587,6 @@ if __name__ == '__main__':
 		jumpList = []
 		loadData(loadFile,p,starList,jumpList)
 	else:  # generate the data randomly
-		p['printZ'] = True;
 		starList = createSystems(p)
 		jumpList = findJumps(starList)
 
