@@ -429,8 +429,7 @@ def findConnections(sList,jList):
 		p1 = s1.drawnPos
 		p2 = s2.drawnPos
 		d = int(sqrt((s1.x-s2.x)*(s1.x-s2.x)+(s1.y-s2.y)*(s1.y-s2.y)+(s1.z-s2.z)*(s1.z-s2.z))+0.5)
-		if (d<15):
-			connectionList.append((p1,p2,d))
+		connectionList.append((p1,p2,d))
 	
 	return connectionList
 
@@ -572,16 +571,16 @@ if __name__ == '__main__':
 #	seed(3)  # this gives two star systems on the same (x,y) with p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12}
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
 # Random map parameters
-	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
-		,'datafile':"sampleSystemData.txt",'scale':1.0,'printZ':True}
-# Big SF Map
-#	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"ExtendedFrontierMap.svg"
+#	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
 #		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
+# Big SF Map
+	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"ExtendedFrontierMap.svg"
+		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
 	# parse command-line options for size of map, 2D or 3D, grid type, distance threshold and whatever else I think to add
 
 	# generate list of star system data
 	from loadData import loadData
-	loadFile = ""#"EFMData.txt"
+	loadFile = "EFMData.txt"
 	if loadFile: # read the data from the specified file
 		starList=[]
 		jumpList = []
