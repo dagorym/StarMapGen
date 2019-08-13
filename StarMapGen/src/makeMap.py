@@ -343,7 +343,8 @@ def createMapSymbols(p,systemList,mList,defDict):
 			data += createSymbol(p,star,starOffset[i],defDict)
 			i += 1
 		if p['printZ']:
-			data += '<text x="%f" y="%f" font-size="%d" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (20*p['scale']*p2mm,20*p['scale']*p2mm,20*p2mm)
+			height = 30
+			data += '<text x="%f" y="%f" font-size="%d" font-family="Ariel,Helvetica,sans-serif" fill="white">' % (20*p['scale']*p2mm,height*p['scale']*p2mm,height*p2mm)
 			if (s.z > 0):
 				data += "+"
 			data += "%d</text>" % s.z
@@ -570,17 +571,21 @@ def createMap(params,defDict,symbolList,connectionList,starList):
 if __name__ == '__main__':
 #	seed(3)  # this gives two star systems on the same (x,y) with p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12}
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
+# Rael map parameters
+	p = {'maxX':40,'maxY':40,'minZ':-10,'maxZ':10,'stellarDensity':0.004,'filename':"JordMap.svg"
+		,'datafile':"sampleSystemData.txt",'scale':1.0,'printZ':True}
 # Random map parameters
 #	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
 #		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
 # Big SF Map
-	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"ExtendedFrontierMap.svg"
-		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
+#	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"ExtendedFrontierMap-sathar.svg"
+#		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
+
 	# parse command-line options for size of map, 2D or 3D, grid type, distance threshold and whatever else I think to add
 
 	# generate list of star system data
 	from loadData import loadData
-	loadFile = "EFMData.txt"
+	loadFile = "JordSectorData.txt"
 	if loadFile: # read the data from the specified file
 		starList=[]
 		jumpList = []
