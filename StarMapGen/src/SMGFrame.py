@@ -1,4 +1,6 @@
 import wx
+import wx.lib.intctrl
+from wx.lib.masked import NumCtrl
 
 class SMGFrame(wx.Frame):    
 	def __init__(self):
@@ -16,7 +18,7 @@ class SMGFrame(wx.Frame):
 		sizer1 = wx.BoxSizer(wx.HORIZONTAL)
 		xSizeLabel = wx.StaticText(mainPanel,label="Map Width (x):")
 		sizer1.Add(xSizeLabel,0,wx.TOP,10)
-		self.xSize = wx.TextCtrl(mainPanel)
+		self.xSize = wx.lib.intctrl.IntCtrl(mainPanel,min=1)
 		sizer1.Add(self.xSize,0,wx.ALL|wx.EXPAND,5)
 		dataSizer.Add(sizer1,0,wx.ALIGN_RIGHT)
 
@@ -24,7 +26,7 @@ class SMGFrame(wx.Frame):
 		sizer2 = wx.BoxSizer(wx.HORIZONTAL)
 		ySizeLabel = wx.StaticText(mainPanel,label="Map Height (y):")
 		sizer2.Add(ySizeLabel,0,wx.TOP,10)
-		self.ySize = wx.TextCtrl(mainPanel)
+		self.ySize = wx.lib.intctrl.IntCtrl(mainPanel,min=1)
 		sizer2.Add(self.ySize,0,wx.ALL|wx.EXPAND,5)
 		dataSizer.Add(sizer2,0,wx.ALIGN_RIGHT)
 
@@ -32,7 +34,7 @@ class SMGFrame(wx.Frame):
 		sizer3 = wx.BoxSizer(wx.HORIZONTAL)
 		zSizeLabel = wx.StaticText(mainPanel,label="Map Thickness (z):")
 		sizer3.Add(zSizeLabel,0,wx.TOP,10)
-		self.zSize = wx.TextCtrl(mainPanel)
+		self.zSize = wx.lib.intctrl.IntCtrl(mainPanel,min=1)
 		sizer3.Add(self.zSize,0,wx.ALL|wx.EXPAND,5)
 		dataSizer.Add(sizer3,0,wx.ALIGN_RIGHT )
 
@@ -40,7 +42,7 @@ class SMGFrame(wx.Frame):
 		sizer4 = wx.BoxSizer(wx.HORIZONTAL)
 		densityLabel = wx.StaticText(mainPanel,label="Stellar Density:")
 		sizer4.Add(densityLabel,0,wx.TOP,10)
-		self.stellarDensity = wx.TextCtrl(mainPanel)
+		self.stellarDensity = NumCtrl(mainPanel,min=0,fractionWidth=4)
 		sizer4.Add(self.stellarDensity,0,wx.ALL|wx.EXPAND,5)
 		dataSizer.Add(sizer4,0,wx.ALIGN_RIGHT )
 
@@ -48,7 +50,7 @@ class SMGFrame(wx.Frame):
 		sizer5 = wx.BoxSizer(wx.HORIZONTAL)
 		textScaleLabel = wx.StaticText(mainPanel,label="Text Scale:")
 		sizer5.Add(textScaleLabel,0,wx.TOP,10)
-		self.textScale = wx.TextCtrl(mainPanel)
+		self.textScale = NumCtrl(mainPanel,min=0.25,fractionWidth=2)
 		sizer5.Add(self.textScale,0,wx.ALL|wx.EXPAND,5)
 		dataSizer.Add(sizer5,0,wx.ALIGN_RIGHT )
 
@@ -121,11 +123,11 @@ class SMGFrame(wx.Frame):
 		self.setDefaults()
 
 	def setDefaults(self):
-		self.xSize.SetValue('20')
-		self.ySize.SetValue('20')
-		self.zSize.SetValue('20')
-		self.stellarDensity.SetValue('0.004')
-		self.textScale.SetValue("1")
+		self.xSize.SetValue(20)
+		self.ySize.SetValue(20)
+		self.zSize.SetValue(20)
+		self.stellarDensity.SetValue(0.004)
+		self.textScale.SetValue(1)
 		self.outMapName.SetValue('sampleMap.svg')
 		self.outDataName.SetValue('sampleMap.dat')
 		self.inDataName.SetValue('')
