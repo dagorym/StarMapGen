@@ -3,3 +3,17 @@
 ################################################################################
 
 /StarMapGen/src/__pycache__
+/.vs
+*.png
+*.svg
+*.txt
+/StarMapGen/src/ZCoordExample.jpg
+/StarMapGen/src/Sector001.jpg
+/StarMapGen/src/RaelSectorMap.jpg
+/StarMapGen/src/parseFile.py
+/StarMapGen/src/MultipleSystems2.jpg
+/StarMapGen/src/MultipleSystems1.jpg
+/StarMapGen/src/JordSectorMap.jpg
+/StarMapGen/src/Fighter-wing.dxf
+*.sln
+*.pyproj
