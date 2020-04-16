@@ -1,9 +1,6 @@
 import wx
 
-class SMGFrame(wx.Frame):    
-    def __init__(self):
-        super().__init__(parent=None, title='Hello World')
-        self.Show()
+from SMGFrame import SMGFrame
 
 if __name__ == '__main__':
     app = wx.App()
