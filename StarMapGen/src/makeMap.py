@@ -572,11 +572,11 @@ if __name__ == '__main__':
 #	seed(3)  # this gives two star systems on the same (x,y) with p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12}
 #	p = {'maxX':12,'maxY':12,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"}
 # Rael map parameters
-	p = {'maxX':40,'maxY':40,'minZ':-10,'maxZ':10,'stellarDensity':0.004,'filename':"JordMap.svg"
-		,'datafile':"sampleSystemData.txt",'scale':1.0,'printZ':True}
+#	p = {'maxX':40,'maxY':40,'minZ':-10,'maxZ':10,'stellarDensity':0.004,'filename':"JordMap.svg"
+#		,'datafile':"sampleSystemData.txt",'scale':1.0,'printZ':True}
 # Random map parameters
-#	p = {'maxX':44,'maxY':34,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"sampleMap.svg"
-#		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
+	p = {'maxX':94,'maxY':20,'minZ':-12,'maxZ':12,'stellarDensity':0.0015,'filename':"sampleMap.svg"
+		,'datafile':"sampleSystemData.txt",'scale':1.0,'printZ':True}
 # Big SF Map
 #	p = {'maxX':90,'maxY':100,'minZ':-12,'maxZ':12,'stellarDensity':0.004,'filename':"ExtendedFrontierMap-sathar.svg"
 #		,'datafile':"sampleSystemData.txt",'scale':1.5,'printZ':False}
@@ -585,7 +585,7 @@ if __name__ == '__main__':
 
 	# generate list of star system data
 	from loadData import loadData
-	loadFile = "JordSectorData.txt"
+	loadFile = "YaziraSectorData.txt"
 	if loadFile: # read the data from the specified file
 		starList=[]
 		jumpList = []
