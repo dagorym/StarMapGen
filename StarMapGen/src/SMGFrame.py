@@ -105,6 +105,8 @@ class SMGFrame(wx.Frame):
 		mapSizer.SetMinSize(300,0)
 		mainSizer.Add(mapSizer,1,wx.ALL|wx.EXPAND,5)
 
+		self.setDefaults()
+
 		mainSizer.SetSizeHints(self)
 		mainPanel.SetSizer(mainSizer)
 		mainPanel.Layout()
@@ -116,4 +118,17 @@ class SMGFrame(wx.Frame):
 	def generateMap(self,event):
 		pass
 	def resetParameters(self,event):
-		pass
+		self.setDefaults()
+
+	def setDefaults(self):
+		self.xSize.SetValue('20')
+		self.ySize.SetValue('20')
+		self.zSize.SetValue('20')
+		self.stellarDensity.SetValue('0.004')
+		self.textScale.SetValue("1")
+		self.outMapName.SetValue('sampleMap.svg')
+		self.outDataName.SetValue('sampleMap.dat')
+		self.inDataName.SetValue('')
+		self.printZ.SetValue(True)
+
+
