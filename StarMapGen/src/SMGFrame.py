@@ -5,19 +5,115 @@ class SMGFrame(wx.Frame):
 		super().__init__(parent=None, title='Star Map Generator')
 		mainPanel = wx.Panel(self)
 
+		#Sizer for entire window
+		mainSizer = wx.BoxSizer()
+		#sizer for left half of window
 		inputSizer = wx.BoxSizer(wx.VERTICAL)
+		#sizer for the input data parameters		
+		dataSizer = wx.StaticBoxSizer(wx.VERTICAL,mainPanel,label = "Map Parameters")
+
+		#x dimension
+		sizer1 = wx.BoxSizer(wx.HORIZONTAL)
+		xSizeLabel = wx.StaticText(mainPanel,label="Map Width (x):")
+		sizer1.Add(xSizeLabel,0,wx.TOP,10)
 		self.xSize = wx.TextCtrl(mainPanel)
-		inputSizer.Add(self.xSize,0,wx.ALL|wx.EXPAND,5)
+		sizer1.Add(self.xSize,0,wx.ALL|wx.EXPAND,5)
+		dataSizer.Add(sizer1,0,wx.ALIGN_RIGHT)
+
+		#y dimension
+		sizer2 = wx.BoxSizer(wx.HORIZONTAL)
+		ySizeLabel = wx.StaticText(mainPanel,label="Map Height (y):")
+		sizer2.Add(ySizeLabel,0,wx.TOP,10)
+		self.ySize = wx.TextCtrl(mainPanel)
+		sizer2.Add(self.ySize,0,wx.ALL|wx.EXPAND,5)
+		dataSizer.Add(sizer2,0,wx.ALIGN_RIGHT)
+
+		#z dimension
+		sizer3 = wx.BoxSizer(wx.HORIZONTAL)
+		zSizeLabel = wx.StaticText(mainPanel,label="Map Thickness (z):")
+		sizer3.Add(zSizeLabel,0,wx.TOP,10)
+		self.zSize = wx.TextCtrl(mainPanel)
+		sizer3.Add(self.zSize,0,wx.ALL|wx.EXPAND,5)
+		dataSizer.Add(sizer3,0,wx.ALIGN_RIGHT )
+
+		#stellar density
+		sizer4 = wx.BoxSizer(wx.HORIZONTAL)
+		densityLabel = wx.StaticText(mainPanel,label="Stellar Density:")
+		sizer4.Add(densityLabel,0,wx.TOP,10)
+		self.stellarDensity = wx.TextCtrl(mainPanel)
+		sizer4.Add(self.stellarDensity,0,wx.ALL|wx.EXPAND,5)
+		dataSizer.Add(sizer4,0,wx.ALIGN_RIGHT )
+
+		#text scale
+		sizer5 = wx.BoxSizer(wx.HORIZONTAL)
+		textScaleLabel = wx.StaticText(mainPanel,label="Text Scale:")
+		sizer5.Add(textScaleLabel,0,wx.TOP,10)
+		self.textScale = wx.TextCtrl(mainPanel)
+		sizer5.Add(self.textScale,0,wx.ALL|wx.EXPAND,5)
+		dataSizer.Add(sizer5,0,wx.ALIGN_RIGHT )
+
+		#output map filename
+		sizer6 = wx.BoxSizer(wx.HORIZONTAL)
+		outMapNameLabel = wx.StaticText(mainPanel,label="Output Map Filename:")
+		sizer6.Add(outMapNameLabel,0,wx.TOP,10)
+		self.outMapName = wx.TextCtrl(mainPanel)
+		sizer6.Add(self.outMapName,0,wx.ALL|wx.EXPAND,5)
+		dataSizer.Add(sizer6,0,wx.ALIGN_RIGHT )
+
+		#output data filename
+		sizer7 = wx.BoxSizer(wx.HORIZONTAL)
+		outDataNameLabel = wx.StaticText(mainPanel,label="Output Data Filename:")
+		sizer7.Add(outDataNameLabel,0,wx.TOP,10)
+		self.outDataName = wx.TextCtrl(mainPanel)
+		sizer7.Add(self.outDataName,0,wx.ALL|wx.EXPAND,5)
+		dataSizer.Add(sizer7,0,wx.ALIGN_RIGHT )
+
+		#input data filename
+		sizer8 = wx.BoxSizer(wx.HORIZONTAL)
+		inDataNameLabel = wx.StaticText(mainPanel,label="Input Data Filename:")
+		sizer8.Add(inDataNameLabel,0,wx.TOP,10)
+		self.inDataName = wx.TextCtrl(mainPanel)
+		sizer8.Add(self.inDataName,0,wx.ALL|wx.EXPAND,5)
+		dataSizer.Add(sizer8,0,wx.ALIGN_RIGHT )
+
+		#print z coordinate
+		sizer9 = wx.BoxSizer(wx.HORIZONTAL)
+		printZLabel = wx.StaticText(mainPanel,label="Print Z coordinate:")
+		sizer9.Add(printZLabel,0,wx.TOP,5)
+		self.printZ = wx.CheckBox(mainPanel)
+		sizer9.Add(self.printZ,0,wx.ALL,5)
+		dataSizer.Add(sizer9,0,wx.ALIGN_RIGHT )
+
+
+		inputSizer.Add(dataSizer,0)
+		
+		#buttons
+		btnSizer = wx.BoxSizer()
 		generateBtn = wx.Button(mainPanel, label="Generate Map")
 		generateBtn.Bind(wx.EVT_BUTTON, self.generateMap)
-		inputSizer.Add(generateBtn,0,wx.ALL|wx.CENTER,5)
-		mainPanel.SetSizer(inputSizer)
+		btnSizer.Add(generateBtn,0,wx.ALL,5)
+		clearBtn = wx.Button(mainPanel, label = "Reset Values")
+		clearBtn.Bind(wx.EVT_BUTTON,self.resetParameters)
+		btnSizer.Add(clearBtn,0,wx.ALL,5)
+
+		inputSizer.Add(btnSizer,0,wx.ALL|wx.CENTER,5)
+
+		mainSizer.Add(inputSizer,0,wx.ALL,5)
+
+		#map display area
+		mapSizer = wx.StaticBoxSizer(wx.VERTICAL,mainPanel,label = "Map")
+		mapSizer.SetMinSize(300,0)
+		mainSizer.Add(mapSizer,1,wx.ALL|wx.EXPAND,5)
+
+		mainSizer.SetSizeHints(self)
+		mainPanel.SetSizer(mainSizer)
+		mainPanel.Layout()
 
 		self.Show()
+#		self.Refresh()
+
 
 	def generateMap(self,event):
-		value = self.xSize.GetValue()
-		if not value:
-			print("You didn't enter anything")
-		else:
-			print(f'You typed: "{value}"')
+		pass
+	def resetParameters(self,event):
+		pass
