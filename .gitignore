@@ -17,3 +17,4 @@
 /StarMapGen/src/Fighter-wing.dxf
 *.sln
 *.pyproj
+/sampleMap.dat
