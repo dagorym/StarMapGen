@@ -114,11 +114,11 @@ class SMGFrame(wx.Frame):
 		mainPanel.Layout()
 
 		self.Show()
-#		self.Refresh()
 
 
 	def generateMap(self,event):
-		pass
+		p = self.createParamDict()
+
 	def resetParameters(self,event):
 		self.setDefaults()
 
@@ -133,4 +133,18 @@ class SMGFrame(wx.Frame):
 		self.inDataName.SetValue('')
 		self.printZ.SetValue(True)
 
-
+	def createParamDict(self):
+		p={}
+		p['maxX'] = self.xSize.GetValue()
+		p['maxY'] = self.ySize.GetValue()
+		zVal = self.zSize.GetValue()//2
+		p['minZ'] = -zVal
+		p['maxZ'] = zVal
+		if (0==(self.zSize.GetValue()%2)): #for even values
+			p['minZ'] = p['minZ']+1
+		p['stellarDensity'] = self.stellarDensity.GetValue()
+		p['filename'] = self.outMapName.GetValue()
+		p['datafile'] = self.outDataName.GetValue()
+		p['scale'] = self.textScale.GetValue()
+		p['printZ'] = self.printZ.GetValue()
+	
