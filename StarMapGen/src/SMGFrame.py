@@ -120,35 +120,7 @@ class SMGFrame(wx.Frame):
 
 	def generateMap(self,event):
 		p = self.createParamDict()
-		loadFile = "YaziraSectorData.txt"
-		if (self.inDataName.GetValue() != ""): # read the data from the specified file
-			from loadData import loadData
-			starList=[]
-			jumpList = []
-			loadData(self.inDataName.GetValue(),p,starList,jumpList)
-		else:  # generate the data randomly
-			starList = createSystems(p)
-			jumpList = findJumps(starList)
-
-		print ("there are",len(starList),"systems on the map")
-
-		# check for overlapping systems and flag
-		multipleList = findOverlaps(starList)
-	
-		defDict = {} # dictionary of gradient definitions for star symbols in SVG file
-		# generate symbols for each system
-		symbolList = createMapSymbols(p,starList,multipleList,defDict)
-	
-		# generate stellar distance data
-		connectionList = findConnections(starList,jumpList)
-	
-		# draw map
-		createMap(p,defDict,symbolList,connectionList,starList)
-	
-		#write out the star system data
-		from writeData import writeSystemData,writeConnectionData
-		writeSystemData(p,starList)
-		writeConnectionData(p,jumpList)
+		self.createMap(p)
 
 	def resetParameters(self,event):
 		self.setDefaults()
@@ -180,4 +152,34 @@ class SMGFrame(wx.Frame):
 		p['printZ'] = self.printZ.GetValue()
 
 		return p
+
+	def createMap(self,p):
+		loadFile = "YaziraSectorData.txt"
+		if (self.inDataName.GetValue() != ""): # read the data from the specified file
+			from loadData import loadData
+			starList=[]
+			jumpList = []
+			loadData(self.inDataName.GetValue(),p,starList,jumpList)
+		else:  # generate the data randomly
+			starList = createSystems(p)
+			jumpList = findJumps(starList)
+
+		print ("there are",len(starList),"systems on the map")
+
+		# check for overlapping systems and flag
+		multipleList = findOverlaps(starList)
 	
+		defDict = {} # dictionary of gradient definitions for star symbols in SVG file
+		# generate symbols for each system
+		symbolList = createMapSymbols(p,starList,multipleList,defDict)
+	
+		# generate stellar distance data
+		connectionList = findConnections(starList,jumpList)
+	
+		# draw map
+		createMap(p,defDict,symbolList,connectionList,starList)
+	
+		#write out the star system data
+		from writeData import writeSystemData,writeConnectionData
+		writeSystemData(p,starList)
+		writeConnectionData(p,jumpList)
