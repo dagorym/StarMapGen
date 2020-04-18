@@ -1,12 +1,16 @@
 import wx
 import wx.lib.intctrl
+
+
 from wx.lib.masked import NumCtrl
+
 from makeMap import *
 
 
 class SMGFrame(wx.Frame):    
 	def __init__(self):
 		super().__init__(parent=None, title='Star Map Generator')
+		self.Center()
 		mainPanel = wx.Panel(self)
 
 		#Sizer for entire window
@@ -119,8 +123,12 @@ class SMGFrame(wx.Frame):
 
 
 	def generateMap(self,event):
+		# set up parameters
 		p = self.createParamDict()
+		# create the map
 		self.createMap(p)
+		# display the map
+		self.drawMap(p['filename'])
 
 	def resetParameters(self,event):
 		self.setDefaults()
@@ -183,3 +191,12 @@ class SMGFrame(wx.Frame):
 		from writeData import writeSystemData,writeConnectionData
 		writeSystemData(p,starList)
 		writeConnectionData(p,jumpList)
+
+		#make a PNG as well
+		#cairosvg.svg2png(url=p["filename"], write_to=p["filename"]+".png")
+
+
+	def drawMap(self,file):
+		import wx.svg
+		self.img = wx.svg.SVGimage.CreateFromFile(file)
+		pass
