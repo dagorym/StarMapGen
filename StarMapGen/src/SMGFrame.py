@@ -1,10 +1,10 @@
 import wx
 import wx.lib.intctrl
 
-
 from wx.lib.masked import NumCtrl
 
 from makeMap import *
+from SMGMapPanel import SMGMapPanel
 
 
 class SMGFrame(wx.Frame):    
@@ -110,11 +110,17 @@ class SMGFrame(wx.Frame):
 
 		#map display area
 		mapSizer = wx.StaticBoxSizer(wx.VERTICAL,mainPanel,label = "Map")
-		mapSizer.SetMinSize(300,0)
-		mainSizer.Add(mapSizer,1,wx.ALL|wx.EXPAND,5)
+		mapSizer.SetMinSize(300,300)
 
+		self.mapPanel = SMGMapPanel(mainPanel);
+		mapSizer.Add(self.mapPanel,1,wx.ALL|wx.SHAPED,5)
+
+		mainSizer.Add(mapSizer,1,wx.ALL|wx.SHAPED,5)
+
+		#set defaults for the inputs
 		self.setDefaults()
 
+		# finalize display
 		mainSizer.SetSizeHints(self)
 		mainPanel.SetSizer(mainSizer)
 		mainPanel.Layout()
@@ -197,6 +203,4 @@ class SMGFrame(wx.Frame):
 
 
 	def drawMap(self,file):
-		import wx.svg
-		self.img = wx.svg.SVGimage.CreateFromFile(file)
-		pass
+		self.mapPanel.setMap(file)
