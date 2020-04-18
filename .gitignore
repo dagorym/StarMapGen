@@ -18,3 +18,5 @@
 *.sln
 *.pyproj
 /sampleMap.dat
+/StarMapGen/src/build/StarMapGen
+/StarMapGen/src/dist
