@@ -42,7 +42,7 @@ def createDef(spType,starData,dDict):
 		color = interpolateColors(spType,0)
 #		print ("Adding " + g1 + " definition")
 		r1 = 100 * starData[0]
-		s1 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g1,r1)
+		s1 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="%f">\n' % (g1,r1)
 		s1 += '   <stop stop-color="%s" offset="0"/>\n' % (color)
 		s1 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (color)
 		s1 += '  </radialGradient>\n'
@@ -52,7 +52,7 @@ def createDef(spType,starData,dDict):
 		color = interpolateColors(spType,1)
 #		print ("Adding " + g2 + " definition")
 		r2 = 56.25 * starData[0]
-		s2 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g2,r2)
+		s2 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="%f">\n' % (g2,r2)
 		s2 += '   <stop stop-color="%s" offset="0"/>\n' % (color)
 		s2 += '   <stop stop-color="%s" offset="0.54545"/>\n' % (color)
 		s2 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (color)
@@ -63,7 +63,7 @@ def createDef(spType,starData,dDict):
 		color = interpolateColors(spType,2)
 #		print ("Adding " + g3 + " definition")
 		r3 = 50 * starData[0]
-		s3 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" r="%f">\n' % (g3,r3)
+		s3 = '  <radialGradient id="%s" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="%f">\n' % (g3,r3)
 		s3 += '   <stop stop-color="%s" offset="0"/>\n' % (color)
 		s3 += '   <stop stop-color="%s" stop-opacity=".86432" offset="0.5"/>\n' % (color)
 		s3 += '   <stop stop-color="%s" stop-opacity="0" offset="1"/>\n'% (color)
