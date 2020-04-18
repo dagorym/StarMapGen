@@ -9,7 +9,7 @@ class SMGMapPanel(wx.Panel):
 	def __init__(self,parent):
 		super(SMGMapPanel,self).__init__(parent)
 		
-		self.mapFile = "test.svg"
+		self.mapFile = "BannerMap.svg"
 		self.img = wx.svg.SVGimage.CreateFromFile(self.mapFile)
 		self.SetMinSize(wx.Size(400,400))
 
