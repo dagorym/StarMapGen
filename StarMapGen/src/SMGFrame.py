@@ -14,7 +14,7 @@ class SMGFrame(wx.Frame):
 		mainPanel = wx.Panel(self)
 
 		#Sizer for entire window
-		mainSizer = wx.BoxSizer()
+		self.mainSizer = wx.BoxSizer()
 		#sizer for left half of window
 		inputSizer = wx.BoxSizer(wx.VERTICAL)
 		#sizer for the input data parameters		
@@ -106,23 +106,26 @@ class SMGFrame(wx.Frame):
 
 		inputSizer.Add(btnSizer,0,wx.ALL|wx.CENTER,5)
 
-		mainSizer.Add(inputSizer,0,wx.ALL,5)
+		self.mainSizer.Add(inputSizer,0,wx.ALL,5)
 
 		#map display area
 		mapSizer = wx.StaticBoxSizer(wx.VERTICAL,mainPanel,label = "Map")
-		mapSizer.SetMinSize(300,300)
+		mapSizer = wx.FlexGridSizer(1,1,wx.Size(0,0))
+		mapSizer.AddGrowableCol(0)
+		mapSizer.AddGrowableRow(0)
+		mapSizer.SetFlexibleDirection(wx.BOTH)
 
 		self.mapPanel = SMGMapPanel(mainPanel);
-		mapSizer.Add(self.mapPanel,1,wx.ALL|wx.SHAPED,5)
+		mapSizer.Add(self.mapPanel,1,wx.ALL|wx.EXPAND,5)
 
-		mainSizer.Add(mapSizer,1,wx.ALL|wx.SHAPED,5)
+		self.mainSizer.Add(mapSizer,1,wx.ALL|wx.EXPAND,5)
 
 		#set defaults for the inputs
 		self.setDefaults()
 
 		# finalize display
-		mainSizer.SetSizeHints(self)
-		mainPanel.SetSizer(mainSizer)
+		self.mainSizer.SetSizeHints(self)
+		mainPanel.SetSizer(self.mainSizer)
 		mainPanel.Layout()
 
 		self.Show()
@@ -204,3 +207,6 @@ class SMGFrame(wx.Frame):
 
 	def drawMap(self,file):
 		self.mapPanel.setMap(file)
+		self.mainSizer.Layout()
+		self.Update()
+		self.Refresh()

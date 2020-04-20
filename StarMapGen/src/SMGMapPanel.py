@@ -6,16 +6,14 @@ import cairocffi
 class SMGMapPanel(wx.Panel):
 	"""A panel to hold and display the generated map"""
 
-	def __init__(self,parent):
+	def __init__(self,parent,w=20,h=20):
 		super(SMGMapPanel,self).__init__(parent)
 		
 		self.mapFile = "BannerMap.svg"
 		self.img = wx.svg.SVGimage.CreateFromFile(self.mapFile)
-		self.SetMinSize(wx.Size(400,400))
+		ratio=w/h
+		self.SetMinSize(wx.Size(400*ratio,400))
 
-		#hbox1 = wx.BoxSizer(wx.HORIZONTAL)
-		#st1 = wx.StaticText(self, label='Some Text')
-		#hbox1.Add(st1,0,wx.ALL|wx.EXPAND,5)
 		self.Bind(wx.EVT_PAINT,self.onPaint)
 
 	def onPaint(self, event):
@@ -23,20 +21,22 @@ class SMGMapPanel(wx.Panel):
 		dc.SetBackground(wx.Brush('black'))
 		dc.Clear()
 
-		dcdim = min(self.Size.width, self.Size.height)
-		imgdim = min(self.img.width, self.img.height)
-#		print (self.Size.width,self.Size.height)
-#		print (self.img.width,self.img.height)
-		scale = dcdim / imgdim
-#		print (scale)
-		width = int(self.img.width * scale)
-		height = int(self.img.height * scale)
-#		print(width,height)
+		self.computeScale()
 		
 		gr = wx.GraphicsRenderer.GetCairoRenderer()
 		ctx = gr.CreateContext(dc)
-		self.img.RenderToGC(ctx, scale)
+		self.img.RenderToGC(ctx, self.scale)
+#		self.Update()
 	
 	def setMap(self,file):
 		self.img = wx.svg.SVGimage.CreateFromFile(file)
-		self.Refresh()
+		self.computeScale()
+
+	def computeScale(self):
+		scale1 = self.Size.width/self.img.width
+		scale2 = self.Size.height/self.img.height
+		self.scale = min(scale1,scale2)
+		width = int(self.img.width * self.scale)
+		height = int(self.img.height * self.scale)
+		print (self.scale, width,height)
+		self.SetSize(wx.Size(width,height))
