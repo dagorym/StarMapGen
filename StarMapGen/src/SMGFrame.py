@@ -128,6 +128,8 @@ class SMGFrame(wx.Frame):
 		mainPanel.SetSizer(self.mainSizer)
 		mainPanel.Layout()
 
+		self.Bind(wx.EVT_SIZE,self.onResize)
+
 		self.Show()
 
 
@@ -210,3 +212,8 @@ class SMGFrame(wx.Frame):
 		self.mainSizer.Layout()
 		self.Update()
 		self.Refresh()
+
+	def onResize(self,event):
+		self.Update()
+		self.Refresh()
+		wx.Event.Skip(event)

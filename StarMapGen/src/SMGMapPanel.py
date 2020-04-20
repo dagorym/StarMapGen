@@ -1,5 +1,6 @@
 import wx
 import wx.svg
+#import wx.event
 import wx.lib.wxcairo
 import cairocffi
 
@@ -26,7 +27,6 @@ class SMGMapPanel(wx.Panel):
 		gr = wx.GraphicsRenderer.GetCairoRenderer()
 		ctx = gr.CreateContext(dc)
 		self.img.RenderToGC(ctx, self.scale)
-#		self.Update()
 	
 	def setMap(self,file):
 		self.img = wx.svg.SVGimage.CreateFromFile(file)
@@ -38,5 +38,6 @@ class SMGMapPanel(wx.Panel):
 		self.scale = min(scale1,scale2)
 		width = int(self.img.width * self.scale)
 		height = int(self.img.height * self.scale)
-		print (self.scale, width,height)
+#		print (self.scale, width,height)
 		self.SetSize(wx.Size(width,height))
+		
