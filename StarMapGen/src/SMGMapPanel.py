@@ -10,10 +10,10 @@ class SMGMapPanel(wx.Panel):
 	def __init__(self,parent,w=20,h=20):
 		super(SMGMapPanel,self).__init__(parent)
 		
-		self.mapFile = "BannerMap.svg"
+		self.mapFile = "StarMapGen\images\BannerMap.svg"
 		self.img = wx.svg.SVGimage.CreateFromFile(self.mapFile)
 		ratio=w/h
-		self.SetMinSize(wx.Size(400*ratio,400))
+		self.SetMinSize(wx.Size(int(400*ratio),400))
 
 		self.Bind(wx.EVT_PAINT,self.onPaint)
 

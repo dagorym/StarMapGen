@@ -6,7 +6,6 @@
 /.vs
 *.png
 *.svg
-*.txt
 /StarMapGen/src/ZCoordExample.jpg
 /StarMapGen/src/Sector001.jpg
 /StarMapGen/src/RaelSectorMap.jpg
